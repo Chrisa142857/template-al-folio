@@ -1,12 +1,9 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - chrisa142857
+  - sucv
 
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - chrisa142857/You-Only-Look-Cytopathology-Once
+  - chrisa142857/Lightsheet_microscopy_image_3D_nuclei_instance_segmentation 
+  - sucv/ABAW2 
+  
