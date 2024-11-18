@@ -10,7 +10,7 @@ email: ziquanw@email.unc.edu
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Long may the sunshine
 footer_text: >
-  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>. <div style="float: left"><details><summary>Since 2024</summary><div style="float: left"><script type='text/javascript' id='mapmyvisitors' src='https://mapmyvisitors.com/map.js?cl=080808&w=200&t=tt&d=iQqJzCTKcRumFQOuhUBlR2HaCf7nKbyuOLrZ87uhBG8&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script></div></details></div>
+  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>. <details style="display: inline"><summary>Since 2024</summary><div style="float: left"><script type='text/javascript' id='mapmyvisitors' src='https://mapmyvisitors.com/map.js?cl=080808&w=200&t=tt&d=iQqJzCTKcRumFQOuhUBlR2HaCf7nKbyuOLrZ87uhBG8&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080'></script></div></details>
 keywords: Ziquan, Wei, academic-website, Machine Learning, Medical Imaging, Neuroscience # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ☀️ # the ⚛️ emoji used as the favicon (alternatively, provide image name in /assets/img/)
