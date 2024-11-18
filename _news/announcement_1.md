@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-⭐ Our paper is accepted by PNAS: [arXiv](https://arxiv.org/abs/2406.13958)
+⭐ Our paper has been accepted by PNAS [[arXiv](https://arxiv.org/abs/2406.13958)]
