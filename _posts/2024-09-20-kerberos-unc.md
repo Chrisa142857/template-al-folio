@@ -4,7 +4,7 @@ title: Ubuntu 20.04 LTS configuring Kerberos client with PAM
 date: 2024-09-20 11:41:16
 description: Take UNC Onyen server as an example
 tags: Ubuntu 20.04, Kerberos, PAM, UNC
-categories: sample-posts
+categories: linux
 ---
 
 It's hard to find an article showing how to configure a Kerberos client with PAM on Ubuntu 20.04 or higher. Here is the step-by-step tutorial 

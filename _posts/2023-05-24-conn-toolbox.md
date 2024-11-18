@@ -4,7 +4,7 @@ title: Extracting RoI BOLD signal of fMRI dataset by using CONN toolbox, using O
 date: 2023-05-24 11:41:16
 description: fMRI data preprocessing
 tags: fMRI, SPM, CONN toolbox, OASIS, Natlab, sMRI, fMRI
-categories: sample-posts
+categories: neuroscience
 ---
 
 This blog is a hand-by-hand tutorial for researchers who in [ACMLab](https://acmlab.org/) to process MRI data. In the meantime, make an effort for the development of the computational neuroimaging field.
