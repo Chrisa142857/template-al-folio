@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Two of our papers have been accepted by NeurIPS 2024, see you at Vancouver! [Poster](https://arxiv.org/abs/2409.17510) [Workshop]([https://arxiv.org/abs/2409.17510](https://openreview.net/forum?id=dw4pR39eUD))
+Two of our papers have been accepted by NeurIPS 2024, see you at Vancouver! [[Poster PDF](https://arxiv.org/abs/2409.17510)] [[Workshop PDF](https://openreview.net/forum?id=dw4pR39eUD)]
