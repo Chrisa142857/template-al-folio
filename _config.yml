@@ -19,6 +19,7 @@ url: https://ziquanw.com # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
 last_updated: true # set to true if you want to display last updated in the footer
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
+back_to_top: true # set to false to disable the back to top button
 
 # -----------------------------------------------------------------------------
 # Theme
@@ -46,9 +47,12 @@ rss_icon: false
 
 navbar_fixed: true
 footer_fixed: true
+search_enabled: true
+socials_in_search: true
+bib_search: true
 
 # Dimensions
-max_width: 800px
+max_width: 930px
 
 # TODO: add layout settings (single page vs. multi-page)
 
@@ -65,6 +69,13 @@ og_image: # The site-wide (default for all links) Open Graph preview image
 # Social integration
 # -----------------------------------------------------------------------------
 
+acm_id: # your dl.acm.org/profile/id
+blogger_url: # your blogger URL
+bluesky_url: # your bluesky URL
+dblp_url: # your DBLP profile url
+discord_id: # your discord id (18-digit unique numerical identifier)
+facebook_id: # your facebook id
+flickr_id: # your flickr id
 github_username: chrisa142857 # your GitHub user name
 gitlab_username: # your GitLab user name
 x_username: ZiquanWei # your X handle
@@ -112,6 +123,8 @@ contact_note: >
 # and follow the instructions for Google Sites. You will need to create a Google Analytics property and copy the Google tag ID.
 google_analytics: G-2MVVZW9Q1M # your Google Analytics measurement ID (format: G-XXXXXXXXXX)
 cronitor_analytics: # cronitor RUM analytics site ID (format: XXXXXXXXX)
+pirsch_analytics: # your Pirsch analytics site ID (length 32 characters)
+openpanel_analytics: # your Openpanel analytics client ID (format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)
 
 # For Google Search Console, see https://support.google.com/webmasters/answer/9008080?hl=en#meta_tag_verification&zippy=%2Chtml-tag
 google_site_verification: # your google-site-verification ID (Google Search Console)
@@ -124,6 +137,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 blog_name: # blog_name will be displayed in your blog page
 blog_description: Archived blogs
 permalink: /blog/:year/:title/
+lsi: false # produce an index for related posts
 
 # Pagination
 pagination:
@@ -158,6 +172,15 @@ disqus_shortname: al-folio # put your disqus shortname
 # external_sources:
 #   - name: blogspot.com
 #     rss_url: https://ziquanw.blogspot.com/
+
+# -----------------------------------------------------------------------------
+# Newsletter
+# -----------------------------------------------------------------------------
+
+newsletter:
+  enabled: false
+  endpoint: # your loops endpoint (e.g., https://app.loops.so/api/newsletter-form/YOUR-ENDPOINT)
+  # https://loops.so/docs/forms/custom-form
 
 # -----------------------------------------------------------------------------
 # Collections
@@ -233,8 +256,10 @@ plugins:
   - jekyll-link-attributes
   - jekyll-minifier
   - jekyll-paginate-v2
+  - jekyll-regex-replace
   - jekyll/scholar
   - jekyll-sitemap
+  - jekyll-tabs
   - jekyll-toc
   - jekyll-twitter-plugin
   - jemoji
@@ -314,7 +339,30 @@ enable_publication_badges:
 
 # Filter out certain bibtex entry keywords used internally from the bib output
 filtered_bibtex_keywords:
-  [abbr, abstract, altmetric, arxiv, bibtex_show, blog, code, html, pdf, poster, preview, selected, slides, supp, video, website]
+  [
+    abbr,
+    abstract,
+    additional_info,
+    altmetric,
+    annotation,
+    arxiv,
+    award,
+    award_name,
+    bibtex_show,
+    blog,
+    code,
+    google_scholar_id,
+    html,
+    inspirehep_id,
+    pdf,
+    poster,
+    preview,
+    selected,
+    slides,
+    supp,
+    video,
+    website,
+  ]
 
 # Maximum number of authors to be shown for each publication (more authors are visible on click)
 max_author_limit: 4 # leave blank to always show all authors
@@ -361,8 +409,10 @@ imagemagick:
 # Optional Features
 # -----------------------------------------------------------------------------
 
-enable_google_analytics: true # enables google analytics
+enable_google_analytics: false # enables google analytics
 enable_cronitor_analytics: false # enables cronitor RUM analytics
+enable_pirsch_analytics: false # enables Pirsch analytics (https://pirsch.io/)
+enable_openpanel_analytics: false # enables Openpanel analytics (https://openpanel.dev/)
 enable_google_verification: false # enables google site verification
 enable_bing_verification: false # enables bing site verification
 enable_masonry: true # enables automatic project cards arrangement
@@ -373,6 +423,7 @@ enable_navbar_social: false # enables displaying social links in the navbar on t
 enable_project_categories: true # enables categorization of projects into multiple categories
 enable_medium_zoom: true # enables image zoom feature (as on medium.com)
 enable_progressbar: true # enables a horizontal progress bar linked to the vertical scroll position
+enable_video_embedding: false # enables video embedding for bibtex entries. If false, the button opens the video link in a new window.
 
 # -----------------------------------------------------------------------------
 # Library versions
