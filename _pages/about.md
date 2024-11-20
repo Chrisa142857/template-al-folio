@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: PhD student
+subtitle: PhD student @ <a href='https://cs.unc.edu/'>UNC_CS</a>, <a href='https://acmlab.org/'>ACMLab</a>
 
 profile:
   align: right
@@ -19,4 +19,52 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A researcher and PhD student supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the system administrator at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). My research interests are graph learning, brain modeling and decoding, computational neuroscience, and machine learning.
+## [about me](https://ziquanw.com/)
+
+👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A researcher and PhD student supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the system administrator at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
+
+ > ### Research interests
+ > - Graph machine learning
+ > - Brain modeling and decoding
+ > - Medical imaging data analysis
+
+## [education & experience](https://ziquanw.com/)
+
+<div class="news">
+    {% assign EduExp_size = 4 %}
+    <div
+      class="table-responsive"
+      {% if include.limit and site.announcements.scrollable and EduExp_size > 3 %}
+        style="max-height: 60vw"
+      {% endif %}
+    >
+      <table class="table table-sm table-borderless">
+          <tr>
+            <th scope="row" style="width: 30%">Aug 23 - Present</th>
+            <td>
+            PhD in Computer Science at <a href='https://cs.unc.edu/'>UNC CS</a>, Chapel Hill
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="width: 30%">Sep 22 - Aug 23</th>
+            <td>
+            Pre-doc Fellow Trainee at <a href='https://acmlab.org/'>UNC ACMLab</a>, Chapel Hill
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="width: 30%">Sep 19 - Jun 22</th>
+            <td>
+            Master in Biomedical Engineering at <a href='https://hust.edu.cn/'>HUST</a>, Wuhan
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="width: 30%">Sep 15 - Jun 19</th>
+            <td>
+            Bachelor in Computer Science at <a href='http://ynnu.edu.cn/'>YNNU</a>, Kunming
+            </td>
+          </tr>
+      </table>
+    </div>
+</div>
+
+*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_nophoto.pdf)*.

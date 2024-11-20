@@ -9,3 +9,5 @@ description:
 toc:
   sidebar: left
 ---
+
+### Please find the CV.pdf here. 👉
