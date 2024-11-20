@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Extracting RoI BOLD signal of fMRI dataset by using CONN toolbox, using OASIS3 as an example
+title: Extracting RoI BOLD signal of fMRI dataset by using CONN toolbox
 date: 2023-05-24 11:41:16
-description: fMRI data preprocessing
-tags: SPM, CONN toolbox, OASIS, Natlab, sMRI, fMRI
+description: fMRI data preprocessing on OASIS3 as an example
+tags: SPM, CONN toolbox, OASIS, Matlab, sMRI, fMRI
 categories: neuroscience
 ---
 
