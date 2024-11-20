@@ -19,7 +19,7 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
-## [about me](https://ziquanw.com/)
+## About me
 
 👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A researcher and PhD student supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the system administrator at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
 
@@ -28,7 +28,7 @@ social: true # includes social icons at the bottom of the page
  > - Brain modeling and decoding
  > - Medical imaging data analysis
 
-## [education & experience](https://ziquanw.com/)
+## Education & Experience
 
 <div class="news">
     {% assign EduExp_size = 4 %}
@@ -40,25 +40,25 @@ social: true # includes social icons at the bottom of the page
     >
       <table class="table table-sm table-borderless">
           <tr>
-            <th scope="row" style="width: 30%">Aug 23 - Present</th>
+            <th scope="row" style="width: 20%">2023 - Present</th>
             <td>
             PhD in Computer Science at <a href='https://cs.unc.edu/'>UNC CS</a>, Chapel Hill
             </td>
           </tr>
           <tr>
-            <th scope="row" style="width: 30%">Sep 22 - Aug 23</th>
+            <th scope="row" style="width: 20%">2022 - 2023</th>
             <td>
             Pre-doc Fellow Trainee at <a href='https://acmlab.org/'>UNC ACMLab</a>, Chapel Hill
             </td>
           </tr>
           <tr>
-            <th scope="row" style="width: 30%">Sep 19 - Jun 22</th>
+            <th scope="row" style="width: 20%">2019 - 2022</th>
             <td>
             Master in Biomedical Engineering at <a href='https://hust.edu.cn/'>HUST</a>, Wuhan
             </td>
           </tr>
           <tr>
-            <th scope="row" style="width: 30%">Sep 15 - Jun 19</th>
+            <th scope="row" style="width: 20%">2015 - 2019</th>
             <td>
             Bachelor in Computer Science at <a href='http://ynnu.edu.cn/'>YNNU</a>, Kunming
             </td>
