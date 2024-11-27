@@ -21,7 +21,7 @@ social: true # includes social icons at the bottom of the page
 
 ## About me
 
-👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A researcher and PhD student supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the system administrator at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
+👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A researcher and PhD student (candidate next semester) supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the system administrator at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
 
  > ### Research interests
  > - Graph machine learning
@@ -68,3 +68,14 @@ social: true # includes social icons at the bottom of the page
 </div>
 
 *Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_nophoto.pdf)*.
+
+## Rewards
+
+ - UNC grad school transportation grant
+ - HUST outstanding graudation
+
+## Services
+
+ - **Reviewer** (conferences): CAAI, MICCAI, NeurIPS, AISTATS, ICLR.
+ - **Reviewer** (journals): "Journal of Supercomputing", "Computers in Biology and Medicine", "IEEE Systems Journal Associate", "Signal, Image and Video Processing".
+ - **Editorial board**: Scientific Reports.
