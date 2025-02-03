@@ -76,6 +76,6 @@ social: true # includes social icons at the bottom of the page
 
 ## Services
 
- - **Reviewer** (conferences): CAAI, MICCAI, NeurIPS, AISTATS, ICLR.
- - **Reviewer** (journals): "Journal of Supercomputing", "Computers in Biology and Medicine", "IEEE Systems Journal Associate", "Signal, Image and Video Processing".
+ - **Reviewer** (conferences): CAAI, MICCAI, NeurIPS, AISTATS, ICLR, ICML.
+ - **Reviewer** (journals): "IEEE TMI", "J. o. Supercomputing", "Computers in Biology and Medicine", "IEEE Systems Journal Associate", "Signal, Image and Video Processing".
  - **Editorial board**: Scientific Reports.
