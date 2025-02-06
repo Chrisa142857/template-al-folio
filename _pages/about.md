@@ -60,14 +60,14 @@ social: true # includes social icons at the bottom of the page
           <tr>
             <th scope="row" style="width: 20%">2015 - 2019</th>
             <td>
-            Bachelor in Computer Science at <a href='http://ynnu.edu.cn/'>YNNU</a>, Kunming
+            Bachelor in Computer Science at <a href='https://www.ynnu.edu.cn/'>YNNU</a>, Kunming
             </td>
           </tr>
       </table>
     </div>
 </div>
 
-*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_nophoto.pdf)*.
+*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_onepage.pdf)*.
 
 ## Rewards
 
