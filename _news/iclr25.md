@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-⭐ Our paper has been accepted by ICLR [[OpenReview](https://openreview.net/forum?id=9UGfOJBuL8)]
+⭐ Our paper has been accepted by ICLR <span style="color:red">(**Spotlight**)</span> [[OpenReview](https://openreview.net/forum?id=9UGfOJBuL8)]
