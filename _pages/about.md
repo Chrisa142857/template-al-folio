@@ -21,7 +21,7 @@ social: true # includes social icons at the bottom of the page
 
 ## About me
 
-👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A researcher and PhD candidate supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the system administrator at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
+👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A `researcher` and `PhD` candidate supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the `linux system administrator` at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
 
  > ### Research interests
  > - Brain modeling and decoding
@@ -76,6 +76,6 @@ social: true # includes social icons at the bottom of the page
 
 ## Services
 
- - **Reviewer** (conferences): CAAI, MICCAI, NeurIPS, AISTATS, ICLR, ICML.
- - **Reviewer** (journals): "IEEE TMI", "J. o. Supercomputing", "Computers in Biology and Medicine", "IEEE Systems Journal Associate", "Signal, Image and Video Processing".
- - **Editorial board**: Scientific Reports.
+ - **Reviewer** (conferences): `CAAI`, `MICCAI`, `NeurIPS`, `AISTATS`, `ICLR`, `ICML`.
+ - **Reviewer** (journals): `Pattern Recognition`, `IEEE TMI`, `J. o. Supercomputing`, `Computers in Biology and Medicine`, `IEEE Systems Journal Associate`, `Signal, Image and Video Processing`.
+ - **Editorial board**: `Scientific Reports`.
