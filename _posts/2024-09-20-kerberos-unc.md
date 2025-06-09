@@ -7,7 +7,7 @@ tags: Ubuntu 20.04, Kerberos, PAM, UNC
 categories: linux
 ---
 
-It's hard to find an article showing how to configure a Kerberos client with PAM on Ubuntu 20.04 or higher. Here is the step-by-step tutorial 
+It's hard to find an article showing how to configure a Kerberos client with PAM on Ubuntu 20.04 or higher. Here is the step-by-step tutorial. (Updated at Jun. 9 2025)
 ## 0. Update apt
 
 ````bash
@@ -47,17 +47,18 @@ AD.UNC.EDU = {
 ````
 
 ## 2. Enable authentication via PAM
+
 `sudo pam-auth-update`
 
-Make sure you selected Kerberos authentication and do not select Unix, which has a higher priority.
-<div class="row mt-3">
-    <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid path="assets/img/post_kerberos.jpg" class="img-fluid rounded z-depth-1" %}
-    </div>
-</div>
-<div class="caption">
-    Screenshot: PAM configuration.
-</div>
+This command will pop up a selection of login authentication method. This is a **dangerous** step will cause you being unable to login if the following two satisfied:
+
+ - Didn't have your Kerberos accounts added either via `adduser` or via editing `/etc/passwd` and `/etc/shadow`.
+ - Selected Unix.
+
+Unix will look for valid a user. So make sure the Kerberos user info is complete in the OS, otherwise disable Unix in PAM.
+
+~~Make sure you selected Kerberos authentication and do not select Unix, which has a higher priority.~~
+
 
 ## 3. Verify the connection between Kerberos server
 `kinit OnyenName`
