@@ -24,8 +24,8 @@ social: true # includes social icons at the bottom of the page
 👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A `researcher` and `PhD` candidate supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the `linux system administrator` at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
 
  > ### Research interests
- > - Brain modeling and decoding
- > - Graph machine learning
+ > - Brain foundation model
+ > - Graph representation learning
  > - Medical imaging analysis
 
 ## Education & Experience
@@ -67,7 +67,7 @@ social: true # includes social icons at the bottom of the page
     </div>
 </div>
 
-*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_onepage.pdf)*.
+*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_updated.pdf)*.
 
 ## Rewards
 
