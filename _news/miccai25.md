@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-⭐ One paper has been early accepted by MICCAI <span style="color:red; font-weight: bold;">(9%)</span> [Title: "Brain-Environment Cross-Attention (BECA) Meta-Matching: A New Perspective of Brain Connectome Zero-Shot Learning"]
+⭐ One paper has been early accepted by MICCAI <span style="color:red; font-weight: bold;">(9%)</span>: [Brain-Environment Cross-Attention (BECA)](https://papers.miccai.org/miccai-2025/0112-Paper2086.html)
