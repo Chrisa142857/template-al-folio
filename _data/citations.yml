@@ -1,0 +1,107 @@
+metadata:
+  last_updated: '2025-11-08'
+papers:
+  z1IYb2oAAAAJ:0EnyYjriUFMC:
+    citations: 1
+    title: A Wasserstein Recipe for Replicable Machine Learning on Functional Neuroimages
+    year: '2024'
+  z1IYb2oAAAAJ:2osOgNQ5qMEC:
+    citations: 90
+    title: A small UAV based multi-temporal image registration for dynamic agricultural terrace monitoring
+    year: '2017'
+  z1IYb2oAAAAJ:3fE2CSJIrl8C:
+    citations: 4
+    title: 'Conditional Diffusion with Ordinal Regression: Longitudinal Data Generation for Neurodegenerative Disease Studies'
+    year: '2025'
+  z1IYb2oAAAAJ:5nxA0vEk-isC:
+    citations: 1
+    title: 'Representing functional connectivity with structural detour: A new perspective to decipher structure-function coupling mechanism'
+    year: '2024'
+  z1IYb2oAAAAJ:8k81kl-MbHgC:
+    citations: 1
+    title: 'Non-local Exchange: Introduce Non-locality via Graph Re-wiring to Graph Neural Networks'
+    year: '2024'
+  z1IYb2oAAAAJ:9yKSN-GCB0IC:
+    citations: 209
+    title: Robust whole slide image analysis for cervical cancer screening using deep learning
+    year: '2021'
+  z1IYb2oAAAAJ:KlAtU1dfN6UC:
+    citations: 0
+    title: Efficient Graph Representation Learning by Non-Local Information Exchange
+    year: '2025'
+  z1IYb2oAAAAJ:LkGwnXOMwfcC:
+    citations: 7
+    title: Exploring the enigma of neural dynamics through a scattering-transform mixer landscape for riemannian manifold
+    year: '2024'
+  z1IYb2oAAAAJ:MXK_kJrjxJIC:
+    citations: 5
+    title: ': A Neural Pathway Transformer for Joining the Dots of Human Connectomes'
+    year: '2024'
+  z1IYb2oAAAAJ:Se3iqnhoufwC:
+    citations: 5
+    title: 'Machine Learning on Dynamic Functional Connectivity: Promise, Pitfalls, and Interpretations'
+    year: '2024'
+  z1IYb2oAAAAJ:Tyk-4Ss8FVUC:
+    citations: 5
+    title: Cervical glandular cell detection from whole slide image with out-of-distribution data
+    year: '2022'
+  z1IYb2oAAAAJ:ULOm3_A8WrAC:
+    citations: 0
+    title: 'Brain-Environment Cross-Attention (BECA) Meta-matching: A New Perspective of Brain Connectome Zero-Shot Learning'
+    year: '2025'
+  z1IYb2oAAAAJ:UeHWp8X0CEIC:
+    citations: 46
+    title: Non-rigid point set registration using dual-feature finite mixture model and global-local structural preservation
+    year: '2018'
+  z1IYb2oAAAAJ:UebtZRa9Y70C:
+    citations: 0
+    title: 'NeuroDetour: A Neural Pathway Transformer for Uncovering Structural-Functional Coupling Mechanisms in Human Connectome'
+    year: '2024'
+  z1IYb2oAAAAJ:W7OEmFMy1HYC:
+    citations: 1
+    title: A General Stitching Solution for Whole-Brain 3D Nuclei Instance Segmentation from Microscopy Images
+    year: '2023'
+  z1IYb2oAAAAJ:YOwf2qJgpHMC:
+    citations: 0
+    title: 'Large Connectome Model: An fMRI Foundation Model of Brain Connectomes Empowered by Brain-Environment Interaction in Multitask Learning Landscape'
+    year: '2025'
+  z1IYb2oAAAAJ:YsMSGLbcyi4C:
+    citations: 2
+    title: High Throughput Deep Model of 3D Nucleus Instance Segmentation by Stereo Stitching Contextual Gaps
+    year: '2023'
+  z1IYb2oAAAAJ:Zph67rFs4hoC:
+    citations: 0
+    title: Conditional Diffusion Model using Ordinal Regression for Longitudinal Neurodegenerative Data Generation
+    year: '2025'
+  z1IYb2oAAAAJ:_kc_bZDykSQC:
+    citations: 0
+    title: 'BrainMoE: Cognition Joint Embedding via Mixture-of-Expert Towards Robust Brain Foundation Model'
+    year: '2025'
+  z1IYb2oAAAAJ:d1gkVwhDpl0C:
+    citations: 23
+    title: An efficient cervical whole slide image analysis framework based on multi-scale semantic and location deep features
+    year: '2021'
+  z1IYb2oAAAAJ:eQOLeE2rZwMC:
+    citations: 9
+    title: Re-think and re-design graph neural networks in spaces of continuous graph diffusion functionals
+    year: '2023'
+  z1IYb2oAAAAJ:kNdYIx-mwKoC:
+    citations: 0
+    title: 'Machine Learning Benchmark on Dynamic Functional Connectivity: Promise, Pitfalls, and Interpretations'
+    year: Unknown Year
+  z1IYb2oAAAAJ:roLk4NBRz8UC:
+    citations: 10
+    title: Symmetry engineering in 2D bioelectronics facilitating augmented biosensing interfaces
+    year: '2024'
+  z1IYb2oAAAAJ:u-x6o8ySG0sC:
+    citations: 35
+    title: Non-rigid image registration with dynamic Gaussian component density and space curvature preservation
+    year: '2018'
+  z1IYb2oAAAAJ:ufrVoPGSRksC:
+    citations: 0
+    title: 'Message Detouring: A Simple Yet Effective Cycle Representation for Expressive Graph Learning'
+    year: '2024'
+  z1IYb2oAAAAJ:zYLM7Y9cAGgC:
+    citations: 48
+    title: Continuous emotion recognition with audio-visual leader-follower attentive fusion
+    year: '2021'
