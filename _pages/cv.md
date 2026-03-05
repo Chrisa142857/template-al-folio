@@ -4,7 +4,7 @@ permalink: /cv/
 title: cv
 nav: true
 nav_order: 5
-cv_pdf: ziquanwei_cv_updated.pdf
+cv_pdf: ziquanwei_cv_for_intern.pdf
 description: 
 toc:
   sidebar: left

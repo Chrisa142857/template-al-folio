@@ -67,7 +67,7 @@ social: true # includes social icons at the bottom of the page
     </div>
 </div>
 
-*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_updated.pdf)*.
+*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_for_intern.pdf)*.
 
 ## Rewards
 
