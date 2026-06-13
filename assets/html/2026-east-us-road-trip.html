@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 美东美中自驾大环线 2100英里</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Leaflet Map JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        /* Custom scrollbar for sleeker UI */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Map styling */
+        #map {
+            height: 450px;
+            z-index: 10;
+        }
+        @media (max-width: 768px) {
+            #map {
+                height: 300px;
+            }
+        }
+        /* Driving leg distance/time labels on the route */
+        .leg-label {
+            background: transparent !important;
+            border: none !important;
+        }
+        /* Always-on city labels in the share popup map */
+        .share-stop-label {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #e2e8f0;
+            color: #334155;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
+            white-space: nowrap;
+        }
+        .share-stop-label::before {
+            display: none;
+        }
+        .leg-label-pill {
+            transform: translate(-50%, -50%);
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #c7d2fe;
+            color: #4338ca;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            white-space: nowrap;
+            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.18);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+
+<!-- Share Card Container (Hidden by default, overlays for easy screenshot) -->
+<div id="share-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full max-h-[95vh] overflow-y-auto p-4 shadow-2xl border border-slate-100 relative">
+        <button onclick="toggleShareModal()" class="absolute top-3 right-3 text-slate-400 hover:text-slate-600 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <div id="share-content" class="text-center">
+            <div class="bg-gradient-to-r from-indigo-600 to-emerald-600 text-white rounded-xl p-3.5 mb-3 shadow-md">
+                <p class="text-[10px] uppercase tracking-wider font-semibold opacity-80">2026 暑期巨献</p>
+                <h3 class="text-xl font-bold mt-0.5">美东自驾大环线 🚗</h3>
+                <p class="text-xs mt-0.5 opacity-90">全程 2100 英里 · 挑战精细化薅羊毛</p>
+            </div>
+
+            <div class="space-y-2.5 text-left">
+                <div class="border-b border-dashed border-slate-200 pb-2.5">
+                    <p class="text-xs text-slate-400">自驾时间</p>
+                    <p class="font-semibold text-slate-700 text-sm">2026年8月4日 - 8月13日 (10天)</p>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400">核心路线</p>
+                    <p class="font-semibold text-slate-700 text-xs leading-relaxed">教堂山 ➔ 华盛顿 ➔ 克利夫兰 ➔ 芝加哥 ➔ UIUC ➔ 肯塔基大溶洞 ➔ 大烟山 ➔ 阿什维尔 ➔ 凯旋</p>
+                    <!-- 路线地图 (与主图同款瓦片+配色，弹窗打开时加载) -->
+                    <div id="share-map" class="mt-2 rounded-xl overflow-hidden border border-slate-100" style="height: 190px;"></div>
+                </div>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-3 italic text-center">截图本卡片，分享至家庭群一同期待吧！</p>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<div class="max-w-6xl mx-auto px-4 py-6 md:py-10">
+    
+    <!-- Top Premium Header -->
+    <header class="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 rounded-3xl p-6 md:p-8 text-white shadow-xl mb-8 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+            <!-- Travel SVG Graphic -->
+            <svg width="240" height="240" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 22H22L12 2Z" fill="white"/>
+            </svg>
+        </div>
+        
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div>
+                <span class="bg-indigo-500/30 text-indigo-300 font-semibold px-3.5 py-1 rounded-full text-xs tracking-wide uppercase">2026 暑期自驾企划</span>
+                <h1 class="text-3xl md:text-4xl font-black tracking-tight mt-2.5">
+                    美东自驾大环线 <span class="text-indigo-400">2,100</span> 英里
+                </h1>
+                <p class="text-slate-300 text-sm md:text-base mt-2 flex items-center gap-2 flex-wrap">
+                    <span>📅 8月4日 - 8月13日 (10天9晚)</span>
+                    <span class="hidden md:inline">•</span>
+                    <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded text-xs font-semibold">家庭理财羊毛版</span>
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap gap-3">
+                <button onclick="toggleShareModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-4 py-2.5 rounded-xl shadow-md transition-all duration-200 flex items-center gap-2 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                    </svg>
+                    发到家庭群
+                </button>
+                <a href="#gas-strategy" class="bg-white/10 hover:bg-white/20 text-white font-medium px-4 py-2.5 rounded-xl border border-white/10 transition-all duration-200 text-sm">
+                    🚗 油价跨州策略
+                </a>
+            </div>
+        </div>
+
+        <!-- Quick Stats Banner -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/10">
+            <div>
+                <p class="text-xs text-slate-400">总行驶里程</p>
+                <p class="text-xl md:text-2xl font-bold mt-0.5">~ 2,100 <span class="text-xs font-normal text-slate-400">Miles</span></p>
+            </div>
+            <div>
+                <p class="text-xs text-slate-400">途经核心州</p>
+                <p class="text-xl md:text-2xl font-bold mt-0.5">NC, VA, MD, OH, IN, IL, KY</p>
+            </div>
+            <div>
+                <p class="text-xs text-slate-400">预计花费(羊毛后)</p>
+                <p class="text-xl md:text-2xl font-bold mt-0.5 text-emerald-400">$2,009 - $2,864</p>
+            </div>
+            <div>
+                <p class="text-xs text-slate-400">薅羊毛累计节省</p>
+                <p class="text-xl md:text-2xl font-bold mt-0.5 text-indigo-400">Up to $1,090</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Two Column Layout: Map + Navigation Tab -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Map Container & Key Info -->
+        <div class="lg:col-span-7 space-y-6">
+            <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100">
+                <div class="p-4 bg-slate-100 border-b border-slate-200/60 flex justify-between items-center">
+                    <span class="text-sm font-semibold text-slate-700 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 bg-indigo-500 rounded-full animate-pulse"></span>
+                        互动式环线自驾路线图 (点标记看详情)
+                    </span>
+                    <button onclick="resetMapView()" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">
+                        重置视野
+                    </button>
+                </div>
+                <div id="map"></div>
+                <!-- Map Legend -->
+                <div class="p-4 bg-slate-50 flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-600 border-t border-slate-100">
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full" style="background:#e11d48"></span> 教堂山 (起点/终点)</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full" style="background:#4f46e5"></span> 华盛顿特区</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full" style="background:#0284c7"></span> 克利夫兰</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full" style="background:#c026d3"></span> 哈蒙德/芝加哥</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full" style="background:#7c3aed"></span> 香槟 UIUC</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full" style="background:#059669"></span> 肯塔基溶洞</span>
+                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full" style="background:#0d9488"></span> 阿什维尔</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Interactive Tabs (Daily Itinerary & Expense Calculator) -->
+        <div class="lg:col-span-5 space-y-6">
+            
+            <!-- Navigation Tabs -->
+            <div class="bg-slate-200/60 p-1.5 rounded-2xl flex">
+                <button onclick="switchTab('itinerary')" id="tab-itinerary" class="flex-1 text-center py-2.5 text-sm font-semibold rounded-xl bg-white text-indigo-600 shadow-sm transition-all">
+                    📅 每日行程
+                </button>
+                <button onclick="switchTab('expenses')" id="tab-expenses" class="flex-1 text-center py-2.5 text-sm font-semibold rounded-xl text-slate-600 hover:text-slate-800 transition-all">
+                    💰 省钱账单
+                </button>
+            </div>
+
+            <!-- Itinerary Tab Content -->
+            <div id="content-itinerary" class="space-y-4">
+                <div class="flex justify-between items-center px-1">
+                    <h3 class="font-bold text-slate-800 text-lg">10天极限美东大环线 🗺️</h3>
+                    <span class="text-xs text-slate-400">点击卡片展开详情</span>
+                </div>
+
+                <!-- Itinerary Timeline -->
+                <div class="space-y-3 max-h-[500px] overflow-y-auto pr-1">
+
+                    <!-- Day 1-3: Washington DC -->
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm group">
+                        <div onclick="toggleCard(this)" class="flex justify-between items-center cursor-pointer gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-2 py-0.5 rounded-md whitespace-nowrap">8/4 - 8/7 (3晚)</span>
+                                <span class="font-bold text-slate-800 text-sm">华盛顿特区 · 乔治敦</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="card-chevron w-4 h-4 text-slate-400 shrink-0 transition-transform"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="card-body hidden mt-3 pt-3 border-t border-slate-100">
+                            <p class="text-xs text-slate-500">🏠 <strong>入住</strong>: citizenM Marriott Georgetown (设计感十足，近Georgetown滨水区)</p>
+                            <p class="text-xs text-slate-500 mt-1">💰 <strong>支付</strong>: Hotels.com $175礼品卡+$125现金 (拿下3晚！)</p>
+                            <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-100 text-xs text-emerald-600 flex items-center gap-1">
+                                💡 Amex Gold & CSP 订外卖自取无税免小费
+                            </div>
+                            <button onclick="event.stopPropagation(); focusMarker(1)" class="mt-2.5 text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-0.5">在地图上定位 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M9.69 18.933a1 1 0 0 0 1.258 0C14.047 16.377 17 11.932 17 8.5a7 7 0 1 0-14 0c0 3.432 2.953 8.178 6.69 10.433ZM12 8.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clip-rule="evenodd" /></svg></button>
+                        </div>
+                    </div>
+
+                    <!-- Day 4: Cleveland -->
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm group">
+                        <div onclick="toggleCard(this)" class="flex justify-between items-center cursor-pointer gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="bg-sky-100 text-sky-700 text-xs font-semibold px-2 py-0.5 rounded-md whitespace-nowrap">8/7 (周五)</span>
+                                <span class="font-bold text-slate-800 text-sm">克利夫兰 · 伊利湖畔</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="card-chevron w-4 h-4 text-slate-400 shrink-0 transition-transform"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="card-body hidden mt-3 pt-3 border-t border-slate-100">
+                            <p class="text-xs text-slate-500">🏠 <strong>入住</strong>: Avon Lake 湖畔 Airbnb (4.91超高评分，带私密独卫)</p>
+                            <p class="text-xs text-slate-500 mt-1">💰 <strong>支付</strong>: Delta信用卡报销 $80 拿下</p>
+                            <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-100 text-xs text-emerald-600 flex items-center gap-1">
+                                💡 提前准备在俄亥俄把油加满，比隔壁芝加哥便宜极多！
+                            </div>
+                            <button onclick="event.stopPropagation(); focusMarker(2)" class="mt-2.5 text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-0.5">在地图上定位 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M9.69 18.933a1 1 0 0 0 1.258 0C14.047 16.377 17 11.932 17 8.5a7 7 0 1 0-14 0c0 3.432 2.953 8.178 6.69 10.433ZM12 8.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clip-rule="evenodd" /></svg></button>
+                        </div>
+                    </div>
+
+                    <!-- Day 5: Chicago/Hammond -->
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm group">
+                        <div onclick="toggleCard(this)" class="flex justify-between items-center cursor-pointer gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="bg-fuchsia-100 text-fuchsia-700 text-xs font-semibold px-2 py-0.5 rounded-md whitespace-nowrap">8/8 (周六)</span>
+                                <span class="font-bold text-slate-800 text-sm">芝加哥 · 哈蒙德 (Hammond, IN)</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="card-chevron w-4 h-4 text-slate-400 shrink-0 transition-transform"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="card-body hidden mt-3 pt-3 border-t border-slate-100">
+                            <p class="text-xs text-slate-500">🏠 <strong>入住</strong>: Hammond Red Roof Inn (全新装修，近轻轨，半小时进城)</p>
+                            <p class="text-xs text-slate-500 mt-1">💰 <strong>支付</strong>: Delta卡 $95 - $20返现渠道</p>
+                            <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-100 text-xs text-amber-600 flex items-center gap-1">
+                                💡 千禧公园大豆子免费，傍晚还有露天音乐会！避开高额摩天轮。
+                            </div>
+                            <button onclick="event.stopPropagation(); focusMarker(3)" class="mt-2.5 text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-0.5">在地图上定位 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M9.69 18.933a1 1 0 0 0 1.258 0C14.047 16.377 17 11.932 17 8.5a7 7 0 1 0-14 0c0 3.432 2.953 8.178 6.69 10.433ZM12 8.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clip-rule="evenodd" /></svg></button>
+                        </div>
+                    </div>
+
+                    <!-- Day 6: UIUC -->
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm group">
+                        <div onclick="toggleCard(this)" class="flex justify-between items-center cursor-pointer gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="bg-violet-100 text-violet-700 text-xs font-semibold px-2 py-0.5 rounded-md whitespace-nowrap">8/9 (周日)</span>
+                                <span class="font-bold text-slate-800 text-sm">香槟 · UIUC大学城</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="card-chevron w-4 h-4 text-slate-400 shrink-0 transition-transform"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="card-body hidden mt-3 pt-3 border-t border-slate-100">
+                            <p class="text-xs text-slate-500">🏠 <strong>入住</strong>: Fairfield by Marriott Inn (万豪品质，安心落脚点)</p>
+                            <p class="text-xs text-slate-500 mt-1">💰 <strong>支付</strong>: 14k 积分兑换 (约达1cent/pt高性价比)</p>
+                            <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-100 text-xs text-emerald-600 flex items-center gap-1">
+                                💡 大学城特别适合刷 DashPass / Uber One 满减券自提外卖
+                            </div>
+                            <button onclick="event.stopPropagation(); focusMarker(4)" class="mt-2.5 text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-0.5">在地图上定位 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M9.69 18.933a1 1 0 0 0 1.258 0C14.047 16.377 17 11.932 17 8.5a7 7 0 1 0-14 0c0 3.432 2.953 8.178 6.69 10.433ZM12 8.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clip-rule="evenodd" /></svg></button>
+                        </div>
+                    </div>
+
+                    <!-- Day 7-8: Cave City & Glasgow -->
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm group">
+                        <div onclick="toggleCard(this)" class="flex justify-between items-center cursor-pointer gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-0.5 rounded-md whitespace-nowrap">8/10 - 8/12 (2晚)</span>
+                                <span class="font-bold text-slate-800 text-sm">肯塔基大溶洞 (洞穴城 / 格拉斯哥)</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="card-chevron w-4 h-4 text-slate-400 shrink-0 transition-transform"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="card-body hidden mt-3 pt-3 border-t border-slate-100">
+                            <p class="text-xs text-slate-500">🏠 <strong>入住</strong>: 希尔顿欢朋 / 智选假日 (温馨套房)</p>
+                            <p class="text-xs text-slate-500 mt-1">💰 <strong>支付</strong>: 2x $100 代金券 / 积分兑换</p>
+                            <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-100 text-xs text-emerald-600 flex items-center gap-1">
+                                💡 肯塔基州是全美低油价天堂，大烟山高负荷爬坡前在这里把油箱喂饱！
+                            </div>
+                            <button onclick="event.stopPropagation(); focusMarker(5)" class="mt-2.5 text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-0.5">在地图上定位 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M9.69 18.933a1 1 0 0 0 1.258 0C14.047 16.377 17 11.932 17 8.5a7 7 0 1 0-14 0c0 3.432 2.953 8.178 6.69 10.433ZM12 8.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clip-rule="evenodd" /></svg></button>
+                        </div>
+                    </div>
+
+                    <!-- Day 9: Asheville -->
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm group">
+                        <div onclick="toggleCard(this)" class="flex justify-between items-center cursor-pointer gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="bg-teal-100 text-teal-700 text-xs font-semibold px-2 py-0.5 rounded-md whitespace-nowrap">8/12 (周三)</span>
+                                <span class="font-bold text-slate-800 text-sm">阿什维尔 · 大烟山穿行</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="card-chevron w-4 h-4 text-slate-400 shrink-0 transition-transform"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z" clip-rule="evenodd" /></svg>
+                        </div>
+                        <div class="card-body hidden mt-3 pt-3 border-t border-slate-100">
+                            <p class="text-xs text-slate-500">🏠 <strong>入住</strong>: 大烟山余麓精选二星/三星酒店 (安心静谧)</p>
+                            <p class="text-xs text-slate-500 mt-1">💰 <strong>支付</strong>: 计划代金券/积分全覆盖 (控制在$100以内)</p>
+                            <div class="mt-2.5 pt-2.5 border-t border-dashed border-slate-100 text-xs text-emerald-600 flex items-center gap-1">
+                                💡 大烟山国家公园观景洗肺！提前买好 85 折 Chipotle、Panera 连锁卡。
+                            </div>
+                            <button onclick="event.stopPropagation(); focusMarker(7)" class="mt-2.5 text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-0.5">在地图上定位 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M9.69 18.933a1 1 0 0 0 1.258 0C14.047 16.377 17 11.932 17 8.5a7 7 0 1 0-14 0c0 3.432 2.953 8.178 6.69 10.433ZM12 8.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" clip-rule="evenodd" /></svg></button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Expense Tab Content (Hidden by default) -->
+            <div id="content-expenses" class="space-y-4 hidden animate-fadeIn">
+                <div class="flex justify-between items-center px-1">
+                    <h3 class="font-bold text-slate-800 text-lg">💰 10天开销与降本分析</h3>
+                    <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-semibold">
+                        已省下 $1090
+                    </span>
+                </div>
+
+                <!-- Budget Bar Chart Breakdown -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+                    <h4 class="text-xs uppercase tracking-wider text-slate-400 font-bold">各项支出降本详情 (羊毛前 VS 实际)</h4>
+                    
+                    <!-- Accommodation -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-medium text-slate-600">1. 全程住宿费</span>
+                            <span class="text-slate-500"><del class="text-slate-300">$970</del> ➔ <strong class="text-slate-700">$475</strong></span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
+                            <div class="bg-indigo-500 h-full" style="width: 49%"></div>
+                            <div class="bg-emerald-300 h-full" style="width: 51%"></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400">省钱利器: Hotels礼品卡$175 + 积分抵扣 + Delta/CSP信用卡券</p>
+                    </div>
+
+                    <!-- Attraction -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-medium text-slate-600">2. 门票景区</span>
+                            <span class="text-slate-500"><del class="text-slate-300">$215</del> ➔ <strong class="text-slate-700">$215</strong></span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-indigo-500 h-full" style="width: 100%"></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400">明细: 猛犸洞$50, 芝加哥博物馆$100, 越狱门票$44, 停车$15</p>
+                    </div>
+
+                    <!-- Transport -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-medium text-slate-600">3. 交通与过路费</span>
+                            <span class="text-slate-500"><del class="text-slate-300">$524</del> ➔ <strong class="text-slate-700">$475</strong></span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
+                            <div class="bg-indigo-500 h-full" style="width: 90%"></div>
+                            <div class="bg-emerald-300 h-full" style="width: 10%"></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400">优化: NC Quick Pass 享受过路费高折，跨州油价套利省大钱</p>
+                    </div>
+
+                    <!-- Food -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-medium text-slate-600">4. 全程伙食 (羊毛大招版)</span>
+                            <span class="text-slate-500"><del class="text-slate-300">$1,650</del> ➔ <strong class="text-emerald-600">$1,065</strong></span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
+                            <div class="bg-emerald-500 h-full" style="width: 64%"></div>
+                            <div class="bg-emerald-300 h-full" style="width: 36%"></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400">大招: 备Trader Joe's做早餐，DC吃免小费餐车，连锁店刷85折卡</p>
+                    </div>
+                </div>
+
+                <!-- Food Tactics Checklist -->
+                <div class="bg-indigo-50/60 p-4 rounded-2xl border border-indigo-100/50 space-y-3">
+                    <h4 class="text-xs font-bold text-indigo-950 flex items-center gap-1.5">
+                        🍔 全程 10 天饮食省钱策略：
+                    </h4>
+                    <ul class="text-xs text-indigo-900 space-y-2 leading-relaxed">
+                        <li class="flex items-start gap-1.5">
+                            <span class="text-indigo-500">•</span>
+                            <span><strong>超市冷餐补给</strong>：不吃酒店 $15+/单人早餐。提前在 Trader Joe's 买面包、咖啡与沙拉，人均才 $4。</span>
+                        </li>
+                        <li class="flex items-start gap-1.5">
+                            <span class="text-indigo-500">•</span>
+                            <span><strong>外卖平台自提</strong>：多餐使用 Amex Gold ($10) 和 DashPass 券“自取(Pickup)”，立省配送费与小费。</span>
+                        </li>
+                        <li class="flex items-start gap-1.5">
+                            <span class="text-indigo-500">•</span>
+                            <span><strong>公路速食 App</strong>：在肯塔基赶路时，使用麦当劳/Popeyes等 App 内“买一送一”或“20% OFF”优惠。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Grid Strategy Sections -->
+    <section id="gas-strategy" class="mt-12 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 space-y-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h3 class="text-xl font-bold text-slate-900">🗺️ 跨州自驾 · 油价与路网防坑全攻略</h3>
+                <p class="text-xs text-slate-500 mt-1">深度自驾游必备知识，教你避开美东高昂隐形消费</p>
+            </div>
+            <div class="bg-amber-100 text-amber-800 text-xs px-3.5 py-1.5 rounded-xl font-bold flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-amber-600">
+                  <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+                </svg>
+                高油税/重税避坑提醒
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Tip 1 -->
+            <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center font-bold">
+                    01
+                </div>
+                <h4 class="font-bold text-slate-800 text-sm">伊利诺伊（芝加哥）避坑</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    库克郡（Cook County）的燃油税排全美前列，千万不可在市区加油。在 8/8 驱车进入芝加哥前，在印第安纳的<strong>哈蒙德 (Hammond)</strong> 落脚点将油箱彻底灌满。
+                </p>
+            </div>
+
+            <!-- Tip 2 -->
+            <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold">
+                    02
+                </div>
+                <h4 class="font-bold text-slate-800 text-sm">肯塔基：加油黄金点</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    肯塔基州的油价极度亲民。在<strong>洞穴城 (Cave City)</strong> 和<strong>格拉斯哥 (Glasgow)</strong> 逗留期间，尽量补满油箱，用来支撑随后进入大烟山群山和阿什维尔时的爬坡消耗。
+                </p>
+            </div>
+
+            <!-- Tip 3 -->
+            <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+                    03
+                </div>
+                <h4 class="font-bold text-slate-800 text-sm">提前绑定 NC Quick Pass</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    印第安纳收费公路和芝加哥 Skyway 电子收费非常贵。利用北卡本地的 <strong>NC Quick Pass</strong>（它完美兼容美中 EZPass），提前关联好车牌，可畅享大额通行费折扣。
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-500 py-10 mt-16 text-center text-xs">
+    <p>© 2026 美东美中大自驾计划大环线. 本网页专为家庭群自驾出游而制</p>
+    <p class="mt-1">结合自驾、加油点和酒店无缝关联 · 祝旅途愉快 🚗</p>
+</footer>
+
+<script>
+    // Map instance
+    let map;
+    let markers = [];
+    let polyline;
+
+    // Route points details with coordinates
+    // 每个落脚点的专属颜色，需与右侧"每日行程"卡片日期标签一致
+    const routePoints = [
+        { id: 0, name: "教堂山 (Chapel Hill, NC)", lat: 35.9132, lng: -79.0558, desc: "启程与终归处 🏠", type: "home", color: "#e11d48" },
+        { id: 1, name: "华盛顿特区 (Washington, D.C.)", lat: 38.9072, lng: -77.0369, desc: "3晚 citizenM Georgetown 酒店，畅享无税外卖自取", type: "city", color: "#4f46e5" },
+        { id: 2, name: "克利夫兰 (Cleveland, OH)", lat: 41.4993, lng: -81.6944, desc: "伊利湖畔温馨 Airbnb，俄亥俄低油价补满油！", type: "city", color: "#0284c7" },
+        { id: 3, name: "哈蒙德/芝加哥 (Hammond, IN)", lat: 41.5834, lng: -87.5000, desc: "哈蒙德红屋顶酒店，进芝加哥前的超值避税港湾 & 便宜加油点", type: "gas_save", color: "#c026d3" },
+        { id: 4, name: "香槟/UIUC (Champaign, IL)", lat: 40.1164, lng: -88.2434, desc: "万豪积分极佳兑换点，大学城超便利美食自取", type: "city", color: "#7c3aed" },
+        { id: 5, name: "洞穴城 (Cave City, KY)", lat: 37.1364, lng: -85.9564, desc: "肯塔基低油价加油天堂，猛犸大溶洞精彩探秘", type: "nature", color: "#059669" },
+        { id: 6, name: "格拉斯哥 (Glasgow, KY)", lat: 37.0034, lng: -85.9189, desc: "落脚Glasgow智选假日，满油整装出发，备战大烟山", type: "nature", color: "#059669" },
+        { id: 7, name: "阿什维尔 (Asheville, NC)", lat: 35.5951, lng: -82.5515, desc: "大烟山国家公园穿行，极致松弛度日", type: "city", color: "#0d9488" }
+    ];
+
+    // Other interesting points (gas warnings, tolls)
+    const extraPoints = [];
+
+    // ====== 地图瓦片双保险方案 (主图与分享弹窗共用) ======
+    // 优先用 CartoDB (全球最美底图)，若瓦片加载失败(如中国大陆访问受阻)，
+    // 自动切换到高德地图 AutoNavi 瓦片 (国内可正常访问)。
+    const tileProviders = [
+        {
+            name: 'CartoDB',
+            url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+            options: {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }
+        },
+        {
+            name: 'AMap',
+            url: 'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',
+            options: {
+                attribution: '&copy; 高德地图 AutoNavi',
+                subdomains: '1234',
+                maxZoom: 18
+            }
+        }
+    ];
+
+    // 为指定地图挂载带自动降级的瓦片图层
+    function attachTilesWithFallback(targetMap) {
+        let currentLayer = null;
+        function load(idx) {
+            if (idx >= tileProviders.length) return;
+            const p = tileProviders[idx];
+            let errorCount = 0;
+            let switched = false;
+            const layer = L.tileLayer(p.url, p.options);
+            layer.on('tileerror', function() {
+                errorCount++;
+                if (errorCount >= 4 && !switched && idx + 1 < tileProviders.length) {
+                    switched = true;
+                    if (currentLayer) targetMap.removeLayer(currentLayer);
+                    load(idx + 1);
+                }
+            });
+            if (currentLayer) targetMap.removeLayer(currentLayer);
+            currentLayer = layer;
+            layer.addTo(targetMap);
+        }
+        load(0);
+    }
+
+    // Initialize leaflet map
+    window.onload = function() {
+        // Create map centered in the middle of our trip route
+        map = L.map('map', {
+            scrollWheelZoom: false // disable zoom scroll to avoid disrupting page scroll
+        }).setView([38.8, -83.0], 5);
+
+        // 挂载带自动降级的瓦片图层 (CartoDB → 高德)
+        attachTilesWithFallback(map);
+
+        // Define color styles for markers
+        const iconStyles = {
+            home: '#ef4444',     // Rose Red
+            city: '#4f46e5',     // Indigo Blue
+            nature: '#10b981',   // Emerald Green
+            gas_save: '#059669', // Deep Emerald
+            warning: '#f59e0b'   // Amber Orange
+        };
+
+        // Function to create custom SVG marker on leafleft
+        function createCustomIcon(color) {
+            const svgHtml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" class="w-8 h-8 drop-shadow-md">
+                <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.302.054.76.76 0 00.302-.054l.03-.017.07-.04C18.902 18.093 21 13.609 21 9.5c0-4.872-4.008-8.5-9-8.5s-9 3.628-9 8.5c0 4.109 2.098 8.593 8.54 12.851zM12 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+            </svg>`;
+            return L.divIcon({
+                html: svgHtml,
+                className: 'custom-leaflet-icon',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
+        }
+
+        // Draw Route Points Markers
+        routePoints.forEach(pt => {
+            const color = pt.color || iconStyles[pt.type] || '#4f46e5';
+            const marker = L.marker([pt.lat, pt.lng], { icon: createCustomIcon(color) })
+                .bindPopup(`<div class="font-bold text-slate-800 text-sm mb-1">${pt.name}</div><div class="text-xs text-slate-600">${pt.desc}</div>`)
+                .addTo(map);
+            
+            markers.push(marker);
+        });
+
+        // Draw Extra Tips Markers (Warnings/Tolls)
+        extraPoints.forEach(pt => {
+            const color = iconStyles[pt.type];
+            L.marker([pt.lat, pt.lng], { icon: createCustomIcon(color) })
+                .bindPopup(`<div class="font-bold text-amber-800 text-sm mb-1 flex items-center gap-1">⚠️ ${pt.name}</div><div class="text-xs text-slate-600 leading-relaxed">${pt.desc}</div>`)
+                .addTo(map);
+        });
+
+        // Connect the dots with a gorgeous dark indigo dashed line to represent driving route
+        const latlngs = [
+            [35.9132, -79.0558], // Chapel Hill start
+            [38.9072, -77.0369], // DC
+            [41.4993, -81.6944], // Cleveland
+            [41.5834, -87.5000], // Hammond (Chicago area)
+            [40.1164, -88.2434], // Champaign UIUC
+            [37.1364, -85.9564], // Cave City KY
+            [37.0034, -85.9189], // Glasgow KY
+            [35.5951, -82.5515], // Asheville NC
+            [35.9132, -79.0558]  // Chapel Hill home loop!
+        ];
+
+        polyline = L.polyline(latlngs, {
+            color: '#4f46e5',
+            weight: 3.5,
+            opacity: 0.85,
+            dashArray: '8, 8',
+            lineJoin: 'round'
+        }).addTo(map);
+
+        // ====== 各站之间的驾驶距离 & 预估时间标签 ======
+        const drivingLegs = [
+            { from: [35.9132, -79.0558], to: [38.9072, -77.0369], dist: "280 mi", time: "约 4.5 小时" },
+            { from: [38.9072, -77.0369], to: [41.4993, -81.6944], dist: "370 mi", time: "约 6 小时" },
+            { from: [41.4993, -81.6944], to: [41.5834, -87.5000], dist: "335 mi", time: "约 5.5 小时" },
+            { from: [41.5834, -87.5000], to: [40.1164, -88.2434], dist: "130 mi", time: "约 2 小时" },
+            { from: [40.1164, -88.2434], to: [37.1364, -85.9564], dist: "315 mi", time: "约 5 小时" },
+            { from: [37.1364, -85.9564], to: [37.0034, -85.9189], dist: "20 mi", time: "约 25 分钟" },
+            { from: [37.0034, -85.9189], to: [35.5951, -82.5515], dist: "305 mi", time: "约 5 小时" },
+            { from: [35.5951, -82.5515], to: [35.9132, -79.0558], dist: "225 mi", time: "约 3.75 小时" }
+        ];
+
+        drivingLegs.forEach(leg => {
+            const mid = [(leg.from[0] + leg.to[0]) / 2, (leg.from[1] + leg.to[1]) / 2];
+            const labelIcon = L.divIcon({
+                className: 'leg-label',
+                html: `<div class="leg-label-pill">🚗 ${leg.dist} · ${leg.time}</div>`,
+                iconSize: [0, 0],
+                iconAnchor: [0, 0]
+            });
+            L.marker(mid, { icon: labelIcon, interactive: false, zIndexOffset: -100 }).addTo(map);
+        });
+
+        // Adjust map view bounds to encompass the complete route dynamically
+        map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+    };
+
+    // Reset map back to general overview of the 2100 miles route
+    function resetMapView() {
+        if(map && polyline) {
+            map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+        }
+    }
+
+    // Collapse / expand itinerary cards
+    function toggleCard(header) {
+        const card = header.parentElement;
+        const body = card.querySelector('.card-body');
+        const chevron = header.querySelector('.card-chevron');
+        if(body) body.classList.toggle('hidden');
+        if(chevron) chevron.classList.toggle('rotate-180');
+    }
+
+    // Interactive focus action on clicking timeline cards
+    function focusMarker(id) {
+        if(map && markers[id]) {
+            const marker = markers[id];
+            map.setView(marker.getLatLng(), 10);
+            marker.openPopup();
+        }
+    }
+
+    // 分享弹窗里的路线地图 (打开时懒加载)
+    let shareMap = null;
+    let shareMapBounds = null;
+
+    function initShareMap() {
+        shareMap = L.map('share-map', {
+            scrollWheelZoom: false,
+            zoomControl: false,
+            attributionControl: false,
+            dragging: true
+        }).setView([38.8, -83.0], 4);
+
+        attachTilesWithFallback(shareMap);
+
+        // 路线：按 routePoints 顺序首尾相连成环
+        const latlngs = routePoints.map(p => [p.lat, p.lng]);
+        latlngs.push([routePoints[0].lat, routePoints[0].lng]);
+
+        const pl = L.polyline(latlngs, {
+            color: '#4f46e5',
+            weight: 3,
+            opacity: 0.85,
+            dashArray: '6, 6',
+            lineJoin: 'round'
+        }).addTo(shareMap);
+
+        // 各站点圆点，颜色与主图/卡片一致
+        routePoints.forEach(pt => {
+            L.circleMarker([pt.lat, pt.lng], {
+                radius: 5,
+                color: '#ffffff',
+                weight: 2,
+                fillColor: pt.color,
+                fillOpacity: 1
+            }).bindTooltip(pt.name.split(' ')[0], { permanent: true, direction: 'top', offset: [0, -4], className: 'share-stop-label' }).addTo(shareMap);
+        });
+
+        shareMapBounds = pl.getBounds();
+        shareMap.fitBounds(shareMapBounds, { padding: [18, 18] });
+    }
+
+    // Toggle beautiful sharing modal screen
+    function toggleShareModal() {
+        const modal = document.getElementById('share-modal');
+        const willShow = modal.classList.contains('hidden');
+        modal.classList.toggle('hidden');
+
+        if (willShow) {
+            // 弹窗显示后再初始化/刷新地图，确保容器有尺寸
+            setTimeout(function() {
+                if (!shareMap) {
+                    initShareMap();
+                } else {
+                    shareMap.invalidateSize();
+                    if (shareMapBounds) shareMap.fitBounds(shareMapBounds, { padding: [18, 18] });
+                }
+            }, 80);
+        }
+    }
+
+    // Switch between Itinerary and Savings tabs
+    function switchTab(tab) {
+        const tabItinerary = document.getElementById('tab-itinerary');
+        const tabExpenses = document.getElementById('tab-expenses');
+        const contentItinerary = document.getElementById('content-itinerary');
+        const contentExpenses = document.getElementById('content-expenses');
+
+        if(tab === 'itinerary') {
+            tabItinerary.className = "flex-1 text-center py-2.5 text-sm font-semibold rounded-xl bg-white text-indigo-600 shadow-sm transition-all";
+            tabExpenses.className = "flex-1 text-center py-2.5 text-sm font-semibold rounded-xl text-slate-600 hover:text-slate-800 transition-all";
+            contentItinerary.classList.remove('hidden');
+            contentExpenses.classList.add('hidden');
+        } else {
+            tabExpenses.className = "flex-1 text-center py-2.5 text-sm font-semibold rounded-xl bg-white text-indigo-600 shadow-sm transition-all";
+            tabItinerary.className = "flex-1 text-center py-2.5 text-sm font-semibold rounded-xl text-slate-600 hover:text-slate-800 transition-all";
+            contentExpenses.classList.remove('hidden');
+            contentItinerary.classList.add('hidden');
+        }
+    }
+</script>
+</body>
+</html>
