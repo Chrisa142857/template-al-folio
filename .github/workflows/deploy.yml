@@ -73,6 +73,13 @@ jobs:
           valueFile: "_config.yml"
           propertyPath: "giscus.repo"
           value: ${{ github.repository }}
+      - name: Install ImageMagick 🖼️
+        # Required by jekyll-imagemagick to generate the responsive .webp
+        # variants referenced by figure.liquid. Without it the <source> tags
+        # point at missing files and browsers show broken images.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick webp
       - name: Install and Build 🔧
         run: |
           pip3 install --upgrade jupyter
