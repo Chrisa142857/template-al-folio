@@ -2,4 +2,5 @@
 **/*.min.js
 assets/css/main.scss
 assets/plotly/demo.html
+assets/html/2026-east-us-road-trip.html
 _data/citations.yml
