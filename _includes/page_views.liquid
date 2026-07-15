@@ -2,27 +2,32 @@
   <summary>
     Since 2024. Click to see page views. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
   </summary>
-  <div style="float: center">
-    <script
-      type="text/javascript"
-      id="mapmyvisitors"
-      src="https://mapmyvisitors.com/map.js?cl=080808&w=200&t=tt&d=iQqJzCTKcRumFQOuhUBlR2HaCf7nKbyuOLrZ87uhBG8&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080"
-    ></script>
-  </div>
-  {% if site.viberank_profile %}
-    <div class="viberank-widget" style="margin-top: 0.6rem">
-      <a href="{{ site.viberank_profile }}" target="_blank" rel="noopener" title="See my viberank profile">
-        {% if site.viberank_og_image and site.viberank_og_image != '' %}
-          <img
-            src="{{ site.viberank_og_image | escape }}"
-            alt="My viberank stats"
-            loading="lazy"
-            style="max-width: 320px; width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(128, 128, 128, 0.25)"
-          >
-        {% else %}
-          <span>🏆 See my viberank profile →</span>
-        {% endif %}
-      </a>
+  <div
+    class="page-views-row"
+    style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1rem; margin-top: 0.5rem"
+  >
+    <div style="flex: 0 0 auto">
+      <script
+        type="text/javascript"
+        id="mapmyvisitors"
+        src="https://mapmyvisitors.com/map.js?cl=080808&w=200&t=tt&d=iQqJzCTKcRumFQOuhUBlR2HaCf7nKbyuOLrZ87uhBG8&co=ffffff&cmo=3acc3a&cmn=ff5353&ct=808080"
+      ></script>
     </div>
-  {% endif %}
+    {% if site.viberank_profile %}
+      <div class="viberank-widget" style="flex: 0 0 auto">
+        <a href="{{ site.viberank_profile }}" target="_blank" rel="noopener" title="See my viberank profile">
+          {% if site.viberank_og_image and site.viberank_og_image != '' %}
+            <img
+              src="{{ site.viberank_og_image | escape }}"
+              alt="My viberank stats"
+              loading="lazy"
+              style="max-width: 320px; width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(128, 128, 128, 0.25)"
+            >
+          {% else %}
+            <span>🏆 See my viberank profile →</span>
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
 </details>
