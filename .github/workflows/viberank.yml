@@ -1,0 +1,89 @@
+name: Update viberank og:image
+
+# Refreshes the viberank_og_image value in _config.yml from the profile's
+# live og:image meta tag, so the footer sharing card always shows current
+# cost/rank instead of a stale hard-coded URL. Commits only when the URL
+# actually changed; that commit re-triggers the deploy workflow.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # every Monday 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: viberank-og-image
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch profile HTML
+        id: fetch
+        run: |
+          set +e
+          curl -sSL --max-time 30 \
+            -A "Mozilla/5.0 (compatible; viberank-og-updater/1.0; +https://ziquanw.com)" \
+            -H "Accept: text/html" \
+            "https://viberank.app/profile/Chrisa142857" -o profile.html
+          code=$?
+          if [ $code -ne 0 ] || [ ! -s profile.html ]; then
+            echo "::warning::Could not fetch viberank profile (curl exit $code); skipping."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Parse og:image and update _config.yml
+        if: steps.fetch.outputs.ok == 'true'
+        run: |
+          python3 - <<'PY'
+          import re, sys
+          html = open('profile.html', encoding='utf-8', errors='ignore').read()
+          pat = [
+              r'<meta[^>]+property=["\']og:image["\'][^>]*?content=["\']([^"\']+)["\']',
+              r'<meta[^>]+content=["\']([^"\']+)["\'][^>]*?property=["\']og:image["\']',
+          ]
+          url = None
+          for p in pat:
+              m = re.search(p, html, re.I)
+              if m:
+                  url = m.group(1).strip()
+                  break
+          if not url:
+              print("::warning::og:image meta tag not found; leaving _config.yml unchanged.")
+              sys.exit(0)
+          if url.startswith('/'):
+              url = 'https://viberank.app' + url
+          cfg = open('_config.yml', encoding='utf-8').read()
+          if not re.search(r'(?m)^viberank_og_image:', cfg):
+              print("::warning::viberank_og_image key not found in _config.yml.")
+              sys.exit(0)
+          new = re.sub(r'(?m)^viberank_og_image:.*$',
+                       lambda _m: 'viberank_og_image: ' + url, cfg)
+          if new != cfg:
+              open('_config.yml', 'w', encoding='utf-8').write(new)
+              print("Updated viberank_og_image ->", url)
+          else:
+              print("viberank_og_image already current; no change.")
+          PY
+
+      - name: Commit if changed
+        if: steps.fetch.outputs.ok == 'true'
+        run: |
+          rm -f profile.html
+          if git diff --quiet -- _config.yml; then
+            echo "No change to _config.yml."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _config.yml
+          git commit -m "chore(viberank): refresh footer og:image card"
+          git push
