@@ -44,21 +44,22 @@ jobs:
         if: steps.fetch.outputs.ok == 'true'
         run: |
           python3 - <<'PY'
-          import re, sys
-          html = open('profile.html', encoding='utf-8', errors='ignore').read()
+          import re, sys, html
+          page = open('profile.html', encoding='utf-8', errors='ignore').read()
           pat = [
               r'<meta[^>]+property=["\']og:image["\'][^>]*?content=["\']([^"\']+)["\']',
               r'<meta[^>]+content=["\']([^"\']+)["\'][^>]*?property=["\']og:image["\']',
           ]
           url = None
           for p in pat:
-              m = re.search(p, html, re.I)
+              m = re.search(p, page, re.I)
               if m:
                   url = m.group(1).strip()
                   break
           if not url:
               print("::warning::og:image meta tag not found; leaving _config.yml unchanged.")
               sys.exit(0)
+          url = html.unescape(url)  # store the true URL (raw &); the template escapes once
           if url.startswith('/'):
               url = 'https://viberank.app' + url
           cfg = open('_config.yml', encoding='utf-8').read()
