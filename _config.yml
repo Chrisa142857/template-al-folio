@@ -14,7 +14,7 @@ footer_text: "" # the "Since 2024 / page views" banner now lives in _includes/pa
 # _includes/page_views.liquid). viberank_og_image is refreshed daily by
 # .github/workflows/viberank.yml — do not edit that value by hand.
 viberank_profile: https://viberank.app/profile/Chrisa142857
-viberank_og_image: https://www.viberank.app/api/og?type=profile&username=Chrisa142857&cost=7120&tokens=9.7B&rank=168&days=56&tools=claude%2Ccodex%2Copencode
+viberank_og_image: https://www.viberank.app/api/og?type=profile&username=Chrisa142857&cost=7120&tokens=9.7B&rank=169&days=56&tools=claude%2Ccodex%2Copencode
 keywords: Ziquan, Wei, academic-website, Machine Learning, Medical Imaging, Neuroscience # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ☀️ # the ⚛️ emoji used as the favicon (alternatively, provide image name in /assets/img/)
