@@ -31,7 +31,7 @@ social: true # includes social icons at the bottom of the page
 ## Education & Experience
 
 <div class="news">
-    {% assign EduExp_size = 4 %}
+    {% assign EduExp_size = 6 %}
     <div
       class="table-responsive"
       {% if include.limit and site.announcements.scrollable and EduExp_size > 3 %}
@@ -39,6 +39,12 @@ social: true # includes social icons at the bottom of the page
       {% endif %}
     >
       <table class="table table-sm table-borderless">
+          <tr>
+            <th scope="row" style="width: 20%">2026</th>
+            <td>
+            Research Intern at <a href='https://egra.ai'>EGRA.ai</a>, New York
+            </td>
+          </tr>
           <tr>
             <th scope="row" style="width: 20%">2023 - Present</th>
             <td>
@@ -49,6 +55,12 @@ social: true # includes social icons at the bottom of the page
             <th scope="row" style="width: 20%">2022 - 2023</th>
             <td>
             Pre-doc Fellow Trainee at <a href='https://acmlab.org/'>UNC ACMLab</a>, Chapel Hill
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" style="width: 20%">2021</th>
+            <td>
+            Research Intern at <a href='https://www.ntu.edu.sg/'>NTU</a>, Singapore
             </td>
           </tr>
           <tr>
@@ -72,7 +84,7 @@ social: true # includes social icons at the bottom of the page
 ## Rewards
 
  - UNC grad school transportation grant
- - HUST outstanding graudation
+ - HUST outstanding graduation
 
 ## Services
 
