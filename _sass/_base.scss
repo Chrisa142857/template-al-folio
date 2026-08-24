@@ -1374,3 +1374,95 @@ ninja-keys::part(ninja-input-wrapper) {
     font-size: 1.6rem;
   }
 }
+
+// About page: visible section dividers, and the publications topic/year tabs
+.about-main {
+  h2 {
+    padding-bottom: 0.35rem;
+    margin-top: 2.2rem;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  // Heading and its control row (e.g. "Selected publications" + By Topic/By Year)
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2.2rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--global-divider-color);
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+  }
+
+  .pub-tabs {
+    display: inline-flex;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 6px;
+    overflow: hidden;
+
+    .pub-tab {
+      background: transparent;
+      border: 0;
+      color: var(--global-text-color-light);
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--global-theme-color);
+      }
+
+      &.active {
+        background-color: var(--global-theme-color);
+        color: var(--global-bg-color);
+      }
+    }
+  }
+
+  // Group label for the By Topic view. Deliberately unlike a paper title
+  // (which is 1rem bolder body text): smaller, uppercase, tracked out and in
+  // the theme accent colour, so it reads as a divider rather than an entry.
+  .pub-topic {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--global-theme-color);
+    margin: 1.9rem 0 0.7rem;
+    padding-left: 0.55rem;
+    border-left: 3px solid var(--global-theme-color);
+  }
+}
+
+.about-main .publications .pub-topic-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Cap the News and Education & Experience tables at roughly three entries and
+// let them scroll internally. The two values differ because the rows do:
+// Education rows are single-line (~34px), while several News entries wrap to
+// two lines (~58px), so the same pixel height would not show three of each.
+.about-main {
+  .edu-scroll-cap,
+  .news-scroll-cap {
+    overflow-y: auto;
+  }
+
+  .edu-scroll-cap {
+    max-height: 6.4rem; // 3 single-line rows
+  }
+
+  .news-scroll-cap {
+    max-height: 9.4rem; // 3 entries, allowing for the ones that wrap
+  }
+}

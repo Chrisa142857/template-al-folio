@@ -13,6 +13,7 @@ footer_text: "" # the "Since 2024 / page views" banner now lives in _includes/pa
 # viberank sharing widget (shown inside the "page views" footer banner, rendered by
 # _includes/page_views.liquid). viberank_og_image is refreshed daily by
 # .github/workflows/viberank.yml — do not edit that value by hand.
+cv_pdf: ziquanwei_cv_for_intern.pdf # sidebar CV icon on the about page
 viberank_profile: https://viberank.app/profile/Chrisa142857
 viberank_og_image: https://www.viberank.app/api/og?type=profile&username=Chrisa142857&cost=7120&tokens=9.7B&rank=265&days=56&tools=claude%2Ccodex%2Copencode&hm=0000000000000000000000000000000112112121211323133222444444242112334333434310000000000000000000000000000000000000&v=7120-56-265
 keywords: Ziquan, Wei, academic-website, Machine Learning, Medical Imaging, Neuroscience # add your own keywords or leave empty
@@ -56,7 +57,7 @@ socials_in_search: true
 bib_search: false
 
 # Dimensions
-max_width: 930px
+max_width: 1200px
 
 # TODO: add layout settings (single page vs. multi-page)
 
@@ -359,6 +360,7 @@ filtered_bibtex_keywords:
     selected,
     slides,
     supp,
+    topic,
     video,
     website,
   ]

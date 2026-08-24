@@ -1,3 +1,91 @@
-<div class="publications">
+<div class="section-head">
+  <h2 id="selected-publications">
+    <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected publications</a>
+  </h2>
+  <div class="pub-tabs">
+    <button type="button" class="pub-tab active" data-pubtab="topic" aria-pressed="true">By Topic</button>
+    <button type="button" class="pub-tab" data-pubtab="year" aria-pressed="false">By Year</button>
+  </div>
+</div>
+
+<div class="publications" id="selected-pubs">
   {% bibliography --group_by none --query @*[selected=true]* %}
 </div>
+
+<script>
+  // jekyll-scholar ignores --query when several {% raw %}{% bibliography %}{% endraw %} tags share a page,
+  // so the list is rendered once (year order) and regrouped here by moving the
+  // existing <li> nodes -- never cloning -- so their event handlers stay intact.
+  (function () {
+    var TOPICS = [
+      ['medgen', 'Medical Generative Model'],
+      ['brain', 'Brain Foundation Model'],
+      ['medimg', 'Medical Image Analysis'],
+      ['earlier', 'Earlier work'],
+    ];
+    var root = document.getElementById('selected-pubs');
+    var list = root && root.querySelector('.bibliography');
+    if (!list) {
+      var tabsEl = document.querySelector('.pub-tabs');
+      if (tabsEl) tabsEl.hidden = true; // no entries: do not leave dead controls
+      return;
+    }
+    var original = Array.prototype.slice.call(list.children);
+
+    // An entry with no topic= in the bib falls back to the catch-all group,
+    // so it is never silently absorbed by whichever group happens to be last.
+    function topicOf(li) {
+      var el = li.querySelector('[data-topic]');
+      var t = el && el.getAttribute('data-topic');
+      return t || 'earlier';
+    }
+    function clearHeadings() {
+      Array.prototype.slice.call(list.querySelectorAll('li.pub-topic-item')).forEach(function (n) {
+        n.parentNode.removeChild(n);
+      });
+    }
+    function byTopic() {
+      clearHeadings();
+      var placed = [];
+      TOPICS.forEach(function (t) {
+        var hit = original.filter(function (li) {
+          return topicOf(li) === t[0];
+        });
+        if (!hit.length) return;
+        var head = document.createElement('li');
+        head.className = 'pub-topic-item';
+        var h = document.createElement('h3');
+        h.className = 'pub-topic';
+        h.textContent = t[1];
+        head.appendChild(h);
+        list.appendChild(head);
+        hit.forEach(function (li) {
+          list.appendChild(li);
+          placed.push(li);
+        });
+      });
+      original.forEach(function (li) {
+        if (placed.indexOf(li) === -1) list.appendChild(li); // defensive: unknown slug keeps year order
+      });
+    }
+    function byYear() {
+      clearHeadings();
+      original.forEach(function (li) {
+        list.appendChild(li);
+      });
+    }
+    Array.prototype.slice.call(document.querySelectorAll('.pub-tab')).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var want = btn.getAttribute('data-pubtab');
+        Array.prototype.slice.call(document.querySelectorAll('.pub-tab')).forEach(function (b) {
+          var on = b.getAttribute('data-pubtab') === want;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        if (want === 'topic') byTopic();
+        else byYear();
+      });
+    });
+    byTopic();
+  })();
+</script>

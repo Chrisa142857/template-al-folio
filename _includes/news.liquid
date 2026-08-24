@@ -2,10 +2,7 @@
   {% if site.news != blank %}
     {% assign news_size = site.news | size %}
     <div
-      class="table-responsive"
-      {% if include.limit and site.announcements.scrollable and news_size > 3 %}
-        style="max-height: clamp(16rem, 50vh, 40rem); overflow-y: auto"
-      {% endif %}
+      class="table-responsive{% if include.limit and site.announcements.scrollable and news_size > 3 %} news-scroll-cap{% endif %}"
     >
       <table class="table table-sm table-borderless">
         {% assign news = site.news | reverse %}
