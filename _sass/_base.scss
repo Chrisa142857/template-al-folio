@@ -1304,3 +1304,73 @@ ninja-keys::part(ninja-input-wrapper) {
   background-color: var(--global-theme-color);
   color: var(--global-text-color);
 }
+
+// About page: sticky profile sidebar (avatar, name, affiliation, social links)
+.about-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// On narrow screens the profile stacks above the content and does not stick.
+.about-sidebar {
+  order: -1;
+}
+
+.about-sidebar-inner {
+  .about-sidebar-name {
+    margin-top: 0.8rem;
+    margin-bottom: 0.2rem;
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .about-sidebar-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .more-info {
+    font-size: 0.85rem;
+  }
+
+  .about-sidebar-social {
+    margin-top: 0.9rem;
+
+    .contact-icons {
+      font-size: 1.5rem;
+      line-height: 1.9rem;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .about-wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .about-main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .about-sidebar {
+    order: 2; // right-hand column
+    flex: 0 0 16rem;
+    width: 16rem;
+    position: sticky;
+    top: 5rem; // clear the fixed navbar
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+  }
+
+  .about-sidebar.about-sidebar-left {
+    order: 0;
+  }
+
+  .about-sidebar-inner .about-sidebar-name {
+    font-size: 1.6rem;
+  }
+}
