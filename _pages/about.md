@@ -6,7 +6,7 @@ subtitle: PhD candidate @ <a href='https://cs.unc.edu/'>UNC_CS</a>, <a href='htt
 
 profile:
   align: right
-  image: prof_pic.png
+  image: prof_pic.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
     <p>372B Medical School Wing D</p>
