@@ -1427,10 +1427,17 @@ ninja-keys::part(ninja-input-wrapper) {
     }
   }
 
+  // Group label for the By Topic view. Deliberately unlike a paper title
+  // (which is 1rem bolder body text): smaller, uppercase, tracked out and in
+  // the theme accent colour, so it reads as a divider rather than an entry.
   .pub-topic {
-    font-size: 1.05rem;
-    margin: 1.4rem 0 0.4rem;
-    padding-left: 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--global-theme-color);
+    margin: 1.9rem 0 0.7rem;
+    padding-left: 0.55rem;
     border-left: 3px solid var(--global-theme-color);
   }
 }

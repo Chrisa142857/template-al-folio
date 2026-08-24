@@ -2,9 +2,9 @@
   <h2 id="selected-publications">
     <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected publications</a>
   </h2>
-  <div class="pub-tabs" role="tablist">
-    <button type="button" class="pub-tab active" data-pubtab="topic" role="tab" aria-selected="true">By Topic</button>
-    <button type="button" class="pub-tab" data-pubtab="year" role="tab" aria-selected="false">By Year</button>
+  <div class="pub-tabs">
+    <button type="button" class="pub-tab active" data-pubtab="topic" aria-pressed="true">By Topic</button>
+    <button type="button" class="pub-tab" data-pubtab="year" aria-pressed="false">By Year</button>
   </div>
 </div>
 
@@ -25,12 +25,19 @@
     ];
     var root = document.getElementById('selected-pubs');
     var list = root && root.querySelector('.bibliography');
-    if (!list) return;
+    if (!list) {
+      var tabsEl = document.querySelector('.pub-tabs');
+      if (tabsEl) tabsEl.hidden = true; // no entries: do not leave dead controls
+      return;
+    }
     var original = Array.prototype.slice.call(list.children);
 
+    // An entry with no topic= in the bib falls back to the catch-all group,
+    // so it is never silently absorbed by whichever group happens to be last.
     function topicOf(li) {
       var el = li.querySelector('[data-topic]');
-      return el ? el.getAttribute('data-topic') : '';
+      var t = el && el.getAttribute('data-topic');
+      return t || 'earlier';
     }
     function clearHeadings() {
       Array.prototype.slice.call(list.querySelectorAll('li.pub-topic-item')).forEach(function (n) {
@@ -58,7 +65,7 @@
         });
       });
       original.forEach(function (li) {
-        if (placed.indexOf(li) === -1) list.appendChild(li); // untagged entries keep year order at the end
+        if (placed.indexOf(li) === -1) list.appendChild(li); // defensive: unknown slug keeps year order
       });
     }
     function byYear() {
@@ -73,7 +80,7 @@
         Array.prototype.slice.call(document.querySelectorAll('.pub-tab')).forEach(function (b) {
           var on = b.getAttribute('data-pubtab') === want;
           b.classList.toggle('active', on);
-          b.setAttribute('aria-selected', on ? 'true' : 'false');
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
         });
         if (want === 'topic') byTopic();
         else byYear();

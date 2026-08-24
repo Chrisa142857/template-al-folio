@@ -21,16 +21,21 @@ social: true # includes social icons at the bottom of the page
 
 ## About me
 
-👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A `researcher` and `PhD` candidate supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the `linux system administrator` at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN). 
+👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A `researcher` and `PhD` candidate supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the `linux system administrator` at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN).
 
- > ### Research interests
- > - Medical Generative Model
- > - Brain Foundation Model
- > - Medical Image Analysis
+> ### Research interests
+>
+> - Medical Generative Model
+> - Brain Foundation Model
+> - Medical Image Analysis
 
-## News
+{% if page.news and site.announcements.enabled %}
+
+<h2><a href="{{ '/news/' | relative_url }}" style="color: inherit">News</a></h2>
 
 {% include news.liquid limit=true %}
+
+{% endif %}
 
 ## Education & Experience
 
@@ -83,12 +88,14 @@ social: true # includes social icons at the bottom of the page
     </div>
 </div>
 
+{% if page.selected_papers %}
 {% include selected_papers.liquid %}
+{% endif %}
 
 ## Honors & Services
 
- - UNC grad school transportation grant
- - HUST outstanding graduation
- - **Reviewer** (conferences): `MICCAI`, `NeurIPS`, `AISTATS`, `ICLR`, `ICML`, `AAAI`.
- - **Reviewer** (journals): `Pattern Recognition`, `IEEE TMI`, `NeuroImage`.
- - **Editorial board**: `Scientific Reports` ([Editor of Distinction Award 2025](https://mt.springernature.com/marketing-assets/?token=82d19661d949b5e6e902d92e92efc3ad&file=EoD2025_Awards-9648_Author%20Service.pdf&sap-outbound-id=C31B152D160CF4F40AEC65DE947672C3A24FED73)).
+- UNC grad school transportation grant
+- HUST outstanding graduation
+- **Reviewer** (conferences): `MICCAI`, `NeurIPS`, `AISTATS`, `ICLR`, `ICML`, `AAAI`.
+- **Reviewer** (journals): `Pattern Recognition`, `IEEE TMI`, `NeuroImage`.
+- **Editorial board**: `Scientific Reports` ([Editor of Distinction Award 2025](https://mt.springernature.com/marketing-assets/?token=82d19661d949b5e6e902d92e92efc3ad&file=EoD2025_Awards-9648_Author%20Service.pdf&sap-outbound-id=C31B152D160CF4F40AEC65DE947672C3A24FED73)).
