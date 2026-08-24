@@ -28,6 +28,7 @@ social: true # includes social icons at the bottom of the page
 > - Medical Generative Model
 > - Brain Foundation Model
 > - Medical Image Analysis
+> - Graph Neural Network
 
 {% if page.news and site.announcements.enabled %}
 
