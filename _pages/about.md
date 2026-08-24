@@ -28,6 +28,10 @@ social: true # includes social icons at the bottom of the page
  > - Brain Foundation Model
  > - Medical Image Analysis
 
+## News
+
+{% include news.liquid limit=true %}
+
 ## Education & Experience
 
 <div class="news">
@@ -79,15 +83,12 @@ social: true # includes social icons at the bottom of the page
     </div>
 </div>
 
-*Find CV.pdf [here](https://ziquanw.com/assets/pdf/ziquanwei_cv_for_intern.pdf)*.
+{% include selected_papers.liquid %}
 
-## Rewards
+## Honors & Services
 
  - UNC grad school transportation grant
  - HUST outstanding graduation
-
-## Services
-
  - **Reviewer** (conferences): `MICCAI`, `NeurIPS`, `AISTATS`, `ICLR`, `ICML`, `AAAI`.
  - **Reviewer** (journals): `Pattern Recognition`, `IEEE TMI`, `NeuroImage`.
  - **Editorial board**: `Scientific Reports` ([Editor of Distinction Award 2025](https://mt.springernature.com/marketing-assets/?token=82d19661d949b5e6e902d92e92efc3ad&file=EoD2025_Awards-9648_Author%20Service.pdf&sap-outbound-id=C31B152D160CF4F40AEC65DE947672C3A24FED73)).

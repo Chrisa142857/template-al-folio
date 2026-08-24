@@ -1374,3 +1374,69 @@ ninja-keys::part(ninja-input-wrapper) {
     font-size: 1.6rem;
   }
 }
+
+// About page: visible section dividers, and the publications topic/year tabs
+.about-main {
+  h2 {
+    padding-bottom: 0.35rem;
+    margin-top: 2.2rem;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  // Heading and its control row (e.g. "Selected publications" + By Topic/By Year)
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2.2rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--global-divider-color);
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+  }
+
+  .pub-tabs {
+    display: inline-flex;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 6px;
+    overflow: hidden;
+
+    .pub-tab {
+      background: transparent;
+      border: 0;
+      color: var(--global-text-color-light);
+      font-size: 0.8rem;
+      padding: 0.25rem 0.7rem;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--global-theme-color);
+      }
+
+      &.active {
+        background-color: var(--global-theme-color);
+        color: var(--global-bg-color);
+      }
+    }
+  }
+
+  .pub-topic {
+    font-size: 1.05rem;
+    margin: 1.4rem 0 0.4rem;
+    padding-left: 0.6rem;
+    border-left: 3px solid var(--global-theme-color);
+  }
+}
+
+.about-main .publications .pub-topic-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
