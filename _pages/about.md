@@ -41,12 +41,7 @@ social: true # includes social icons at the bottom of the page
 
 <div class="news">
     {% assign EduExp_size = 6 %}
-    <div
-      class="table-responsive"
-      {% if include.limit and site.announcements.scrollable and EduExp_size > 3 %}
-        style="max-height: 60vw"
-      {% endif %}
-    >
+    <div class="table-responsive edu-scroll-cap">
       <table class="table table-sm table-borderless">
           <tr>
             <th scope="row" style="width: 20%">2026</th>

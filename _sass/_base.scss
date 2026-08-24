@@ -1447,3 +1447,22 @@ ninja-keys::part(ninja-input-wrapper) {
   margin: 0;
   padding: 0;
 }
+
+// Cap the News and Education & Experience tables at roughly three entries and
+// let them scroll internally. The two values differ because the rows do:
+// Education rows are single-line (~34px), while several News entries wrap to
+// two lines (~58px), so the same pixel height would not show three of each.
+.about-main {
+  .edu-scroll-cap,
+  .news-scroll-cap {
+    overflow-y: auto;
+  }
+
+  .edu-scroll-cap {
+    max-height: 6.4rem; // 3 single-line rows
+  }
+
+  .news-scroll-cap {
+    max-height: 9.4rem; // 3 entries, allowing for the ones that wrap
+  }
+}
