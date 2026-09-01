@@ -23,12 +23,14 @@ social: true # includes social icons at the bottom of the page
 
 👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A `researcher` and `PhD` candidate supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the `linux system administrator` at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN).
 
+I build **digital twins of the human body**: generative models of structure that deforms over time, built for one individual from routinely measured signals and able to be run forward under altered conditions. I work on 4D generation of deforming anatomy from sparse physiological conditioning, on non-rigid correspondence between deforming shapes, and on latent spaces whose samples stay on a matrix manifold by construction rather than by projection.
+
 > ### Research interests
 >
-> - Medical Generative Model
+> - Digital Twin & Generative Model
 > - Brain Foundation Model
 > - Medical Image Analysis
-> - Graph Neural Network
+> - Geometric Deep Learning
 
 {% if page.news and site.announcements.enabled %}
 
