@@ -31,6 +31,7 @@ I build **digital twins of the human body**: generative models of structure that
 > - Brain Foundation Model
 > - Medical Image Analysis
 > - Geometric Deep Learning
+> - Non-Rigid Correspondence
 
 {% if page.news and site.announcements.enabled %}
 
