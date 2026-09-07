@@ -23,14 +23,14 @@ social: true # includes social icons at the bottom of the page
 
 👋 I'm **Ziquan Wei** (魏梓泉 in Chinese). A `researcher` and `PhD` candidate supervised by [Dr. Guorong Wu](https://www.acmlab.org/team) at UNC-Chapel Hill. I'm meanwhile the `linux system administrator` at [ACMLab](https://www.acmlab.org). Previously, I obtained a Master's degree supervised by [Prof. Shaoqun Zeng](https://zh.wikipedia.org/wiki/%E6%9B%BE%E7%BB%8D%E7%BE%A4) and a Bachelor's degree supervised by [Prof. Yang Yang](https://scholar.google.com/citations?user=7JLPFHgAAAAJ&hl=zh-CN).
 
-I work on **generative models and RL post-training**. I build generative models that sample the state of a world or an individual as **digital twins**. Their conditioning variables form an action space, so a twin is an environment: intervene, resample, read the trajectory. The program is to post-train LLMs in it, scoring rollouts on rewards computed from generated state and validated against held-out outcomes to bound reward hacking. The objective is **trustworthy AI**.
+I work on **generative models and reinforcement learning**. I build generative models that sample the state of a world or an individual as **digital twins**. Their conditioning variables form an action space, so a twin is an environment: intervene, resample, read the trajectory. I have built them for the brain and the heart, with large-scale encoders for **brain networks** and **medical timeseries**. My interests span **biofeedback rewarding** and **trustworthy generative models**.
 
 > ### Research interests
 >
 > - Generative Models & Digital Twins
-> - RL Post-Training & Reward Modeling
+> - Biofeedback Rewarding & Reinforcement Learning
+> - Trustworthy Generative Models
 > - LLM Agents
-> - Trustworthy AI
 > - Brain Foundation Models
 > - Computer Vision & Non-Rigid Correspondence
 
