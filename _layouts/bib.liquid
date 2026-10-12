@@ -35,6 +35,7 @@
           <img class="preview z-depth-1 rounded" src="{{ entry.preview }}">
         {% else %}
           {% assign entry_path = entry.preview | prepend: '/assets/img/publication_preview/' %}
+          {% assign preview_alt = entry.preview_alt | default: entry.preview %}
           {%
             include figure.liquid
             loading="eager"
@@ -42,7 +43,7 @@
             sizes = "200px"
             class="preview z-depth-1 rounded"
             zoomable=true
-            alt=entry.preview
+            alt=preview_alt
           %}
         {% endif %}
       {% endif %}
@@ -253,7 +254,7 @@
         {% endif %}
       {% endif %}
       {% if entry.website %}
-        <a href="{{ entry.website }}" class="btn btn-sm z-depth-0" role="button">Website</a>
+        <a href="{{ entry.website }}" class="btn btn-sm z-depth-0" role="button">Project Page</a>
       {% endif %}
     </div>
     {% if site.enable_publication_badges %}
