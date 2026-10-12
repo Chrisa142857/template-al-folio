@@ -357,6 +357,7 @@ filtered_bibtex_keywords:
     pdf,
     poster,
     preview,
+    preview_alt,
     selected,
     slides,
     supp,
