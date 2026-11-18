@@ -3,7 +3,10 @@ name: Update viberank og:image
 # Refreshes the viberank_og_image value in _config.yml from the profile's
 # live og:image meta tag, so the footer sharing card always shows current
 # cost/rank instead of a stale hard-coded URL. Commits only when the URL
-# actually changed; that commit re-triggers the deploy workflow.
+# actually changed. That commit does NOT re-trigger deploy.yml: a push made
+# with the default GITHUB_TOKEN never starts a new workflow run, so the last
+# step dispatches deploy.yml explicitly (workflow_dispatch is the documented
+# exception). See docs.github.com/en/actions/concepts/security/github_token
 
 on:
   schedule:
@@ -12,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # needed to dispatch deploy.yml (see "Trigger deploy workflow")
 
 concurrency:
   group: viberank-og-image
@@ -76,11 +80,13 @@ jobs:
           PY
 
       - name: Commit if changed
+        id: commit
         if: steps.fetch.outputs.ok == 'true'
         run: |
           rm -f profile.html
           if git diff --quiet -- _config.yml; then
             echo "No change to _config.yml."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -88,3 +94,34 @@ jobs:
           git add _config.yml
           git commit -m "chore(viberank): refresh footer og:image card"
           git push
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger deploy workflow
+        # The push above used GITHUB_TOKEN, so it cannot fire deploy.yml's
+        # `push` trigger. Dispatch it instead; workflow_dispatch also ignores
+        # deploy.yml's paths: filter, so the rebuild never silently skips.
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          DEPLOY_REF: ${{ github.ref_name }}
+        run: |
+          case "$DEPLOY_REF" in
+            master | main) ;;
+            *)
+              echo "::warning::Commit landed on $DEPLOY_REF, not a publish branch; not dispatching."
+              exit 0
+              ;;
+          esac
+          for i in 1 2 3; do
+            if gh api --method POST --silent \
+              "repos/$GH_REPO/actions/workflows/deploy.yml/dispatches" \
+              -f ref="$DEPLOY_REF"; then
+              echo "Dispatched deploy.yml on $DEPLOY_REF."
+              exit 0
+            fi
+            echo "::warning::Dispatch attempt $i failed; retrying in 15s."
+            sleep 15
+          done
+          echo "::error::Could not dispatch deploy.yml; the live site will stay stale."
+          exit 1

@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # needed to dispatch deploy.yml (see "Trigger deploy workflow")
 
 jobs:
   update-citations:
@@ -98,10 +99,43 @@ jobs:
           git config --local user.name "GitHub Actions"
           echo "🔧 Git configured."
       - name: Commit and push if changed
+        id: commit
         run: |
           git add _data/citations.yml
-          git diff --staged --quiet || (
+          if git diff --staged --quiet; then
+            echo "ℹ️ Nothing to commit."
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+          else
             echo "📤 Committing and pushing changes..."
             git commit -m "Update Google Scholar citations"
             git push
-          )
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Trigger deploy workflow
+        # Same reason as in viberank.yml: a GITHUB_TOKEN push does not start a
+        # new workflow run, so deploy.yml must be dispatched explicitly.
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          DEPLOY_REF: ${{ github.ref_name }}
+        run: |
+          case "$DEPLOY_REF" in
+            master | main) ;;
+            *)
+              echo "::warning::Commit landed on $DEPLOY_REF, not a publish branch; not dispatching."
+              exit 0
+              ;;
+          esac
+          for i in 1 2 3; do
+            if gh api --method POST --silent \
+              "repos/$GH_REPO/actions/workflows/deploy.yml/dispatches" \
+              -f ref="$DEPLOY_REF"; then
+              echo "Dispatched deploy.yml on $DEPLOY_REF."
+              exit 0
+            fi
+            echo "::warning::Dispatch attempt $i failed; retrying in 15s."
+            sleep 15
+          done
+          echo "::error::Could not dispatch deploy.yml; the live site will stay stale."
+          exit 1
