@@ -15,7 +15,7 @@ footer_text: "" # the "Since 2024 / page views" banner now lives in _includes/pa
 # .github/workflows/viberank.yml — do not edit that value by hand.
 cv_pdf: ziquanwei_cv_for_intern.pdf # sidebar CV icon on the about page
 viberank_profile: https://viberank.app/profile/Chrisa142857
-viberank_og_image: https://www.viberank.app/api/og?type=profile&username=Chrisa142857&cost=32215&tokens=57.8B&rank=198&days=171&streak=54&tools=claude%2Ccodex%2Copencode&hm=0000000112233221212123322211101001222323114111444103433310233221123334432344432444431121334414433411232234144442&v=32215-171-198
+viberank_og_image: https://www.viberank.app/api/og?type=profile&username=Chrisa142857&cost=32491&tokens=58.6B&rank=194&days=172&streak=55&tools=claude%2Ccodex%2Copencode&hm=0000001122332212221233222111010012223231141114441034333102332211233344323444324444311213344144334112322341444441&v=32491-172-194
 keywords: Ziquan, Wei, academic-website, Machine Learning, Medical Imaging, Neuroscience # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ☀️ # the ⚛️ emoji used as the favicon (alternatively, provide image name in /assets/img/)
